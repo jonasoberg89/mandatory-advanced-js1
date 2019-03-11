@@ -1,12 +1,7 @@
 import React, { Component } from "react";
-import io from "socket.io-client"
 class Render extends Component {
     constructor(props) {
         super(props);
-        this.socket = io("http://ec2-13-53-66-202.eu-north-1.compute.amazonaws.com:3000/");
-        this.regExp = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#/%?=~_|!:,.;]*[a-z0-9-+&@#/%=~_|]/gim;
-        this.regExp2 = /(^|[^/])(www\.[\S]+(\b|$))/gim;
-        this.regExEmoji = /:.[^\s:-]*:/g;
         this.emoji = {
             ':grinning:': '😀',
             ':joy:': '😂',
@@ -14,27 +9,27 @@ class Render extends Component {
             ':thumbsup:': '👍',
             ':muscle:': '💪',
             ':beer:': '🍺',
-            ':skull:':"💀",
-            ':zombie:':"🧟"
+            ':skull:': "💀",
+            ':zombie:': "🧟"
         }
         this.handleLinks = this.handleLinks.bind(this);
     }
     handleLinks(data, id) {
-        return data.split(" ").map(word => {
-            if (this.regExp.test(word)) {
-                return <a key={id} href={word}> {word} </a>
+        return data.split(/\s+/).map(word => {
+            if (/\b(?:https?|ftp):\/\/[a-z0-9-+&@#/%?=~_|!:,.;]*[a-z0-9-+&@#/%=~_|]/gim.test(word)) {
+                return <a key={id} href={word}>{word}</a>
             }
-            else if (this.regExp2.test(word)) {
-                return <a key={id} href={"https://"+word}> {word} </a>
+            else if (/(^|[^/])(www\.[\S]+(\b|$))/gim.test(word)) {
+                return <a key={id} href={"https://" + word}>{word}</a>
             }
-            else if (this.regExEmoji.test(word)){
-                for (let key in this.emoji){
-                   if(word === key){
-                   return word.replace(key,this.emoji[key])
-                   }
+            else if (/:.[^\s:-]*:/g.test(word)) {
+                for (let key in this.emoji) {
+                    if (word === key) {
+                        return word.replace(new RegExp(key, "g"), this.emoji[key] + " ")
+                    }
                 }
             }
-            return word+" ";
+            return `${word} `;
         })
     }
     render() {

@@ -29,6 +29,7 @@ class Chat extends Component {
   }
   handleNewMessage(data) {
     this.setState({ users: [...this.state.users, data] });
+    
     let container = document.querySelector(".chat-container");
     container.scrollTop = container.scrollHeight - container.clientHeight;
     this.audio.play();

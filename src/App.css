@@ -245,6 +245,7 @@ color: #84878B;
 a{
   color:#fff;
   font-weight: bold;
+  padding:5px;
 }
 .chat-circle{
   height: 14px;
