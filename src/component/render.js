@@ -25,7 +25,7 @@ class Render extends Component {
                 return <a key={id} href={word}> {word} </a>
             }
             else if (this.regExp2.test(word)) {
-                return <a key={id} href={word}> {word} </a>
+                return <a key={id} href={"https://"+word}> {word} </a>
             }
             else if (this.regExEmoji.test(word)){
                 for (let key in this.emoji){
